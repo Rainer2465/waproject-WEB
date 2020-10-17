@@ -1,5 +1,7 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Drawer from 'components/Layout/Drawer';
+import PermissionRoute from 'components/Shared/PermissionRoute';
+import { enRoles } from 'interfaces/models/user';
 import AccountMultipleIcon from 'mdi-react/AccountMultipleIcon';
 import StarIcon from 'mdi-react/StarIcon';
 import ViewDashboardIcon from 'mdi-react/ViewDashboardIcon';
@@ -11,6 +13,15 @@ import SamplePage from './Sample';
 import UserIndexPage from './Users';
 
 export const ScrollTopContext = React.createContext<Function>(() => {});
+
+interface IProps {
+  colSpan: number;
+  error?: any;
+  role?: enRoles | enRoles[];
+  loading?: boolean;
+  hasData: boolean;
+  onTryAgain: () => void;
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AdminPage = memo((props: {}) => {
+const AdminPage = memo((props: IProps) => {
   const classes = useStyles(props);
 
   const mainContent = useRef<HTMLDivElement>();
@@ -40,10 +51,10 @@ const AdminPage = memo((props: {}) => {
     {
       path: '/usuarios',
       display: 'Usuários',
-      // role: enRoles.admin,
+      role: enRoles.admin,
       icon: AccountMultipleIcon
     },
-    { path: '/exemplos', display: 'Exemplos', icon: StarIcon }
+    { path: '/exemplos', display: 'Pedidos', icon: StarIcon }
   ]);
 
   const scrollTop = useCallback(() => setTimeout(() => mainContent.current.scrollTo(0, 0), 100), []);
@@ -55,9 +66,9 @@ const AdminPage = memo((props: {}) => {
         <Drawer menu={menu}>
           <main ref={mainContent} className={classes.content}>
             <Switch>
-              <Route path='/exemplos' component={SamplePage} />
-              <Route path='/usuarios' component={UserIndexPage} />
-              <Route path='/' component={DashboardIndexPage} />
+              <PermissionRoute path='/exemplos' role={enRoles.admin} component={SamplePage} />
+              <PermissionRoute path='/usuarios' role={enRoles.admin} component={UserIndexPage} />
+              <PermissionRoute path='/' component={DashboardIndexPage} role={enRoles.admin} />
               <Route render={renderRedirect} />
             </Switch>
           </main>

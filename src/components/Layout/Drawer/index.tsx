@@ -3,6 +3,7 @@ import Hidden from '@material-ui/core/Hidden';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import clsx from 'clsx';
+import { enRoles } from 'interfaces/models/user';
 import MoreIcon from 'mdi-react/MoreIcon';
 import React, { Fragment, memo, Props, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -14,12 +15,14 @@ export interface IMenu {
   path: string;
   icon?: typeof MoreIcon;
   display: string;
+  role?: enRoles | enRoles[];
   action?: string;
   submenu?: IMenu[];
 }
 
 interface IProps extends RouteComponentProps<{}>, Props<{}>, WithWidth {
   menu: IMenu[];
+  role?: enRoles | enRoles[];
 }
 
 const useStyle = makeStyles(theme => ({
@@ -105,6 +108,7 @@ const Drawer = memo((props: IProps) => {
         <Hidden smDown>
           <CoreDrawer
             variant='permanent'
+            anchor='top'
             className={clsx(classes.drawer, {
               [classes.drawerFull]: drawerFull,
               [classes.drawerMini]: !drawerFull
