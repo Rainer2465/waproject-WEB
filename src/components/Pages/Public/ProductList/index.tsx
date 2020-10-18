@@ -8,8 +8,7 @@ const OrderIndexPage = memo(() => {
   const [produto] = useState({
     name: 'Phone XL',
     price: 799,
-    description:
-      'Maior desempenho Sua memória RAM de 3 GB, lhe permitirá executar vários aplicativos ao mesmo tempo sem inconvenientes.',
+    description: 'Maior desempenho Sua memória RAM de 3 GB, lhe permitirá executar vários aplicativos ao mesmo tempo.',
     quantidade: '1'
   });
 
