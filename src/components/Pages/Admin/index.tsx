@@ -47,18 +47,18 @@ const AdminPage = memo((props: IProps) => {
 
   const mainContent = useRef<HTMLDivElement>();
   const [menu] = useState([
-    { path: '/', display: 'Dashboard', icon: ViewDashboardIcon },
+    { path: '/admin', display: 'Dashboard', icon: ViewDashboardIcon },
     {
-      path: '/usuarios',
+      path: '/admin/usuarios',
       display: 'Usuários',
       role: enRoles.admin,
       icon: AccountMultipleIcon
     },
-    { path: '/exemplos', display: 'Pedidos', icon: StarIcon }
+    { path: '/admin/exemplos', display: 'Exemplos', icon: StarIcon }
   ]);
 
   const scrollTop = useCallback(() => setTimeout(() => mainContent.current.scrollTo(0, 0), 100), []);
-  const renderRedirect = useCallback(() => <Redirect to='/' />, []);
+  const renderRedirect = useCallback(() => <Redirect to='/admin' />, []);
 
   return (
     <div className={classes.root}>
@@ -66,9 +66,9 @@ const AdminPage = memo((props: IProps) => {
         <Drawer menu={menu}>
           <main ref={mainContent} className={classes.content}>
             <Switch>
-              <PermissionRoute path='/exemplos' role={enRoles.admin} component={SamplePage} />
-              <PermissionRoute path='/usuarios' role={enRoles.admin} component={UserIndexPage} />
-              <PermissionRoute path='/' component={DashboardIndexPage} role={enRoles.admin} />
+              <PermissionRoute path='/admin/exemplos' role={enRoles.admin} component={SamplePage} />
+              <PermissionRoute path='/admin/usuarios' role={enRoles.admin} component={UserIndexPage} />
+              <PermissionRoute path='/admin' component={DashboardIndexPage} role={enRoles.admin} />
               <Route render={renderRedirect} />
             </Switch>
           </main>

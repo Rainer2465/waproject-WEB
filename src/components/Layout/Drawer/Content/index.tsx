@@ -26,8 +26,8 @@ const useStyle = makeStyles(theme => ({
     minHeight: theme.variables.headerHeight - 11
   },
   logo: {
-    maxWidth: 'calc(100% - 10px)',
     width: 150,
+    marginLeft: 5,
     maxHeight: 100
   },
   list: {
