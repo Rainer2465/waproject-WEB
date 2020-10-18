@@ -1,13 +1,11 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Drawer from 'components/Layout/Drawer';
 import { enRoles } from 'interfaces/models/user';
-import ClipboardArrowBottomIcon from 'mdi-react/ClipboardArrowBottomIcon';
 import ShoppingIcon from 'mdi-react/ShoppingIcon';
 import React, { memo, useCallback, useRef, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import UserIndexPage from './OrderList';
-import OrderIndexPage from './ProductList';
 
 export const ScrollTopContext = React.createContext<Function>(() => {});
 
@@ -43,13 +41,10 @@ const UserPage = memo((props: IProps) => {
   const classes = useStyles(props);
 
   const mainContent = useRef<HTMLDivElement>();
-  const [menu] = useState([
-    { path: '/produtos', display: 'Produtos', icon: ShoppingIcon },
-    { path: '/pedidos', display: 'Pedidos', icon: ClipboardArrowBottomIcon }
-  ]);
+  const [menu] = useState([{ path: '/', display: 'Produtos', icon: ShoppingIcon }]);
 
   const scrollTop = useCallback(() => setTimeout(() => mainContent.current.scrollTo(0, 0), 100), []);
-  const renderRedirect = useCallback(() => <Redirect to='/produtos' />, []);
+  const renderRedirect = useCallback(() => <Redirect to='/' />, []);
 
   return (
     <div className={classes.root}>
@@ -57,8 +52,7 @@ const UserPage = memo((props: IProps) => {
         <Drawer menu={menu}>
           <main ref={mainContent} className={classes.content}>
             <Switch>
-              <Route path='/produtos' component={OrderIndexPage} />
-              <Route path='/pedidos' component={UserIndexPage} />
+              <Route path='/' component={UserIndexPage} />
               <Route render={renderRedirect} />
             </Switch>
           </main>
