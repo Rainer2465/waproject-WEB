@@ -49,7 +49,9 @@ const Content = memo((props: IProps) => {
     <div className={classes.root}>
       <div className={classes.header}>
         <div className={classes.headerLogo}>
-          <img src={logoWhite} className={classes.logo} alt='logo' />
+          <a href='/'>
+            <img src={logoWhite} className={classes.logo} alt='logo' />
+          </a>
         </div>
       </div>
 
