@@ -3,7 +3,8 @@ import Drawer from 'components/Layout/Drawer';
 import PermissionRoute from 'components/Shared/PermissionRoute';
 import { enRoles } from 'interfaces/models/user';
 import AccountMultipleIcon from 'mdi-react/AccountMultipleIcon';
-import StarIcon from 'mdi-react/StarIcon';
+import ClipboardCheckIcon from 'mdi-react/ClipboardCheckIcon';
+import ShoppingIcon from 'mdi-react/ShoppingIcon';
 import ViewDashboardIcon from 'mdi-react/ViewDashboardIcon';
 import React, { memo, useCallback, useRef, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -54,7 +55,8 @@ const AdminPage = memo((props: IProps) => {
       role: enRoles.admin,
       icon: AccountMultipleIcon
     },
-    { path: '/admin/exemplos', display: 'Exemplos', icon: StarIcon }
+    { path: '/admin/realizar-pedidos', display: 'Realizar Pedidos', icon: ShoppingIcon },
+    { path: '/admin/pedidos', display: 'Pedidos', icon: ClipboardCheckIcon }
   ]);
 
   const scrollTop = useCallback(() => setTimeout(() => mainContent.current.scrollTo(0, 0), 100), []);
@@ -66,7 +68,7 @@ const AdminPage = memo((props: IProps) => {
         <Drawer menu={menu}>
           <main ref={mainContent} className={classes.content}>
             <Switch>
-              <PermissionRoute path='/admin/exemplos' role={enRoles.admin} component={SamplePage} />
+              <PermissionRoute path='/admin/exemplo' role={enRoles.admin} component={SamplePage} />
               <PermissionRoute path='/admin/usuarios' role={enRoles.admin} component={UserIndexPage} />
               <PermissionRoute path='/admin' component={DashboardIndexPage} role={enRoles.admin} />
               <Route render={renderRedirect} />
