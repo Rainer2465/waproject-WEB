@@ -6,8 +6,8 @@ import ShoppingIcon from 'mdi-react/ShoppingIcon';
 import React, { memo, useCallback, useRef, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import UserIndexPage from './ProductList';
-import OrderIndexPage from './UserOrder';
+import UserIndexPage from './OrderList';
+import OrderIndexPage from './ProductList';
 
 export const ScrollTopContext = React.createContext<Function>(() => {});
 
@@ -44,12 +44,12 @@ const UserPage = memo((props: IProps) => {
 
   const mainContent = useRef<HTMLDivElement>();
   const [menu] = useState([
-    { path: '/user', display: 'Produtos', icon: ShoppingIcon },
+    { path: '/produtos', display: 'Produtos', icon: ShoppingIcon },
     { path: '/pedidos', display: 'Pedidos', icon: ClipboardArrowBottomIcon }
   ]);
 
   const scrollTop = useCallback(() => setTimeout(() => mainContent.current.scrollTo(0, 0), 100), []);
-  const renderRedirect = useCallback(() => <Redirect to='/user' />, []);
+  const renderRedirect = useCallback(() => <Redirect to='/produtos' />, []);
 
   return (
     <div className={classes.root}>
@@ -57,8 +57,8 @@ const UserPage = memo((props: IProps) => {
         <Drawer menu={menu}>
           <main ref={mainContent} className={classes.content}>
             <Switch>
-              <Route path='/user' component={UserIndexPage} />
-              <Route path='/pedidos' component={OrderIndexPage} />
+              <Route path='/produtos' component={OrderIndexPage} />
+              <Route path='/pedidos' component={UserIndexPage} />
               <Route render={renderRedirect} />
             </Switch>
           </main>
