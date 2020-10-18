@@ -9,7 +9,7 @@ const OrderIndexPage = memo(() => {
     name: 'Phone XL',
     price: 799,
     description:
-      'Maior desempenho Sua memória RAM de 3 GB, lhe permitirá executar vários aplicativos ao mesmo tempo, jogar e navegar rapidamente e sem inconvenientes. Mais para ver Com sua tela grande IPS de 5.5", desfrute de cores intensas e maior clareza em todo o seu conteúdo.',
+      'Maior desempenho Sua memória RAM de 3 GB, lhe permitirá executar vários aplicativos ao mesmo tempo, jogar e navegar rapidamente e sem inconvenientes.',
     quantidade: '1'
   });
 
