@@ -9,7 +9,7 @@ const OrderIndexPage = memo(() => {
     name: 'Phone XL',
     price: 799,
     description:
-      'Maior desempenho Sua memória RAM de 3 GB, lhe permitirá executar vários aplicativos ao mesmo tempo, jogar e navegar rapidamente e sem inconvenientes.',
+      'Maior desempenho Sua memória RAM de 3 GB, lhe permitirá executar vários aplicativos ao mesmo tempo sem inconvenientes.',
     quantidade: '1'
   });
 
