@@ -4,12 +4,12 @@ import PermissionRoute from 'components/Shared/PermissionRoute';
 import { enRoles } from 'interfaces/models/user';
 import AccountMultipleIcon from 'mdi-react/AccountMultipleIcon';
 import ClipboardCheckIcon from 'mdi-react/ClipboardCheckIcon';
-import ShoppingIcon from 'mdi-react/ShoppingIcon';
 import ViewDashboardIcon from 'mdi-react/ViewDashboardIcon';
 import React, { memo, useCallback, useRef, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import DashboardIndexPage from './Dashboard';
+import OrdersIndexPage from './Orders';
 import SamplePage from './Sample';
 import UserIndexPage from './Users';
 
@@ -55,7 +55,6 @@ const AdminPage = memo((props: IProps) => {
       role: enRoles.admin,
       icon: AccountMultipleIcon
     },
-    { path: '/admin/realizar-pedidos', display: 'Realizar Pedidos', icon: ShoppingIcon },
     { path: '/admin/pedidos', display: 'Pedidos', icon: ClipboardCheckIcon }
   ]);
 
@@ -70,6 +69,7 @@ const AdminPage = memo((props: IProps) => {
             <Switch>
               <PermissionRoute path='/admin/exemplo' role={enRoles.admin} component={SamplePage} />
               <PermissionRoute path='/admin/usuarios' role={enRoles.admin} component={UserIndexPage} />
+              <PermissionRoute path='/admin/pedidos' component={OrdersIndexPage} />
               <PermissionRoute path='/admin' component={DashboardIndexPage} role={enRoles.admin} />
               <Route render={renderRedirect} />
             </Switch>

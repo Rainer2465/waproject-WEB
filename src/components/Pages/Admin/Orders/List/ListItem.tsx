@@ -12,7 +12,6 @@ const ListItem = memo((props: IProps) => {
 
   return (
     <TableRow>
-      <TableCell>{order.id}</TableCell>
       <TableCell>{order.user.firstName}</TableCell>
       <TableCell>{order.amount}</TableCell>
       <TableCell>{order.price}</TableCell>

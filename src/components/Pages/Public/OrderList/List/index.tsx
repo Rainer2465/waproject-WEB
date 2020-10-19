@@ -1,129 +1,76 @@
+// eslint-disable-next-line no-restricted-imports
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Toolbar from 'components/Layout/Toolbar';
-import CardLoader from 'components/Shared/CardLoader';
-import EmptyAndErrorMessages from 'components/Shared/Pagination/EmptyAndErrorMessages';
-import SearchField from 'components/Shared/Pagination/SearchField';
-import TableCellActions from 'components/Shared/Pagination/TableCellActions';
-import TableCellSortable from 'components/Shared/Pagination/TableCellSortable';
-import TablePagination from 'components/Shared/Pagination/TablePagination';
-import TableWrapper from 'components/Shared/TableWrapper';
+import { logError } from 'helpers/rxjs-operators/logError';
 import usePaginationObservable from 'hooks/usePagination';
-import IUser from 'interfaces/models/user';
-import RefreshIcon from 'mdi-react/RefreshIcon';
+import IOrder from 'interfaces/models/order';
 import React, { Fragment, memo, useCallback, useState } from 'react';
-import userService from 'services/user';
+import { useObservable } from 'react-use-observable';
+import { map } from 'rxjs/operators';
+import authService from 'services/auth';
+import orderService from 'services/order';
 
 import FormDialog from '../FormDialog';
-import ListItem from './ListItem';
 
 const ProductListPage = memo(() => {
   const [formOpened, setFormOpened] = useState(false);
-  const [current, setCurrent] = useState<IUser>();
+  const [current, setCurrent] = useState<IOrder>();
 
-  const [params, mergeParams, loading, data, error, , refresh] = usePaginationObservable(
-    params => userService.list(params),
-    { orderBy: 'fullName', orderDirection: 'asc' },
+  const [mergeParams, , refresh] = usePaginationObservable(
+    params => orderService.list(params),
+    { orderBy: 'id', orderDirection: 'asc' },
     []
   );
+
+  const [user] = useObservable(() => {
+    return authService.getUser().pipe(
+      map(user => ({
+        userid: `${user.firstName ?? ''}`.trim() || 'U'
+      })),
+      logError()
+    );
+  }, []);
 
   const handleCreate = useCallback(() => {
     setCurrent(null);
     setFormOpened(true);
   }, []);
 
-  const handleEdit = useCallback((current: IUser) => {
-    setCurrent(current);
-    setFormOpened(true);
-  }, []);
-
   const formCallback = useCallback(
-    (user?: IUser) => {
+    (order?: IOrder) => {
       setFormOpened(false);
-      current ? refresh() : mergeParams({ term: user.email });
     },
     [current, mergeParams, refresh]
   );
 
   const formCancel = useCallback(() => setFormOpened(false), []);
-  const handleRefresh = useCallback(() => refresh(), [refresh]);
 
-  const { total, results } = data || ({ total: 0, results: [] } as typeof data);
+  if (!user) {
+    return null;
+  }
 
   return (
     <Fragment>
       <Toolbar title='Pedidos' />
 
       <Card>
-        <FormDialog opened={formOpened} user={current} onComplete={formCallback} onCancel={formCancel} />
-
-        <CardLoader show={loading} />
+        <FormDialog opened={formOpened} order={current} onComplete={formCallback} onCancel={formCancel} />
 
         <CardContent>
+          <h1>Bem-vindo {user.userid}</h1>
+          <p>Para realizar um pedido basta clicar no botão &apos;Novo Pedido&apos;,</p>
+          <p>e inserir sua descrição valor e quantidade.</p>
           <Grid container justify='space-between' alignItems='center' spacing={2}>
-            <Grid item xs={12} sm={6} lg={4}>
-              <SearchField paginationParams={params} onChange={mergeParams} />
-            </Grid>
-
-            <Grid item xs={12} sm={'auto'}>
+            <Grid item xs={12} sm={12}>
               <Button fullWidth variant='contained' color='primary' onClick={handleCreate}>
-                Adicionar
+                Novo Pedido
               </Button>
             </Grid>
           </Grid>
         </CardContent>
-
-        <TableWrapper minWidth={500}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCellSortable
-                  paginationParams={params}
-                  disabled={loading}
-                  onChange={mergeParams}
-                  column='fullName'
-                >
-                  ID
-                </TableCellSortable>
-                <TableCellSortable paginationParams={params} disabled={loading} onChange={mergeParams} column='email'>
-                  Descrição
-                </TableCellSortable>
-                <TableCellSortable paginationParams={params} disabled={loading} onChange={mergeParams} column='email'>
-                  Status
-                </TableCellSortable>
-                <TableCellSortable paginationParams={params} disabled={loading} onChange={mergeParams} column='email'>
-                  Data
-                </TableCellSortable>
-                <TableCellActions>
-                  <IconButton disabled={loading} onClick={handleRefresh}>
-                    <RefreshIcon />
-                  </IconButton>
-                </TableCellActions>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <EmptyAndErrorMessages
-                colSpan={3}
-                error={error}
-                loading={loading}
-                hasData={results.length > 0}
-                onTryAgain={refresh}
-              />
-              {results.map(user => (
-                <ListItem key={user.id} user={user} onEdit={handleEdit} onDeleteComplete={refresh} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableWrapper>
-
-        <TablePagination total={total} disabled={loading} paginationParams={params} onChange={mergeParams} />
       </Card>
     </Fragment>
   );

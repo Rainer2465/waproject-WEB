@@ -41,7 +41,7 @@ const SearchField = memo((props: IProps) => {
       const value = event.currentTarget.value ?? '';
       setSearchTerm(value);
 
-      if (value?.length > 2) {
+      if (value?.length > 0) {
         onChange({ term: value, page: 0 });
         return;
       }

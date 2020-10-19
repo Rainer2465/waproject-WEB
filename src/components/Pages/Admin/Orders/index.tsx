@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import OrderListPage from './List';
 
-const UserIndexPage = memo(() => {
+const OrdersIndexPage = memo(() => {
   return (
     <Switch>
       <Route path='/' component={OrderListPage} />
@@ -11,4 +11,4 @@ const UserIndexPage = memo(() => {
   );
 });
 
-export default UserIndexPage;
+export default OrdersIndexPage;
